@@ -1,23 +1,50 @@
 import { Handle, type HandleType, Position, useReactFlow } from "@xyflow/react";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import AddIcon from "/icon_add.svg?url";
 import TargetArrowIcon from "/icon_target_arrow.svg?url";
+import { getHandleStyle } from "../utils";
 
+/**
+ * 커스텀 핸들 컴포넌트의 props 인터페이스
+ */
+interface CustomHandleProps {
+  /** 핸들의 고유 ID */
+  id: string;
+  /** 핸들의 위치 (Left, Right, Top, Bottom) */
+  position: Position;
+  /** 핸들 타입 (source 또는 target) */
+  type: HandleType;
+  /** 소속 노드 ID */
+  nodeId: string;
+}
+
+/**
+ * 핸들의 연결 상태를 나타내는 타입
+ */
+type HandleStatus = "source" | "target" | "disconnected";
+
+/**
+ * React Flow 노드 간 연결을 위한 커스텀 핸들 컴포넌트
+ * 연결 상태에 따라 다른 시각적 표현을 제공합니다.
+ *
+ * @param props - 커스텀 핸들 컴포넌트 props
+ * @returns JSX.Element
+ */
 export function CustomHandle({
   id,
   position,
   type,
   nodeId,
-}: {
-  id: string;
-  position: Position;
-  type: HandleType;
-  nodeId: string;
-}) {
+}: CustomHandleProps) {
   const { getEdges } = useReactFlow();
 
-  // 3가지 상태를 구분하는 로직: 소스 핸들, 타겟 핸들, 연결 안됨
-  const handleStatus = useMemo(() => {
+  /**
+   * 현재 핸들의 연결 상태를 결정합니다
+   * - disconnected: 연결되지 않은 상태
+   * - source: 연결의 출발점 역할을 하는 상태
+   * - target: 연결의 도착점 역할을 하는 상태
+   */
+  const handleStatus = useMemo<HandleStatus>(() => {
     const edges = getEdges();
     const connectedEdges = edges.filter((edge) => {
       if (type === "source") {
@@ -28,79 +55,62 @@ export function CustomHandle({
     });
 
     if (connectedEdges.length === 0) {
-      return "disconnected"; // 연결되지 않음
-    } else {
-      // 연결된 엣지가 있으면, 현재 핸들이 소스인지 타겟인지 확인
-      const isSourceInEdge = connectedEdges.some(
-        (edge) => edge.source === nodeId && edge.sourceHandle === id
-      );
-
-      if (isSourceInEdge) {
-        return "source"; // 현재 핸들이 연결된 엣지의 소스 핸들
-      } else {
-        return "target"; // 현재 핸들이 연결된 엣지의 타겟 핸들
-      }
+      return "disconnected";
     }
+
+    // 연결된 엣지에서 현재 핸들의 역할 확인
+    const isSourceInEdge = connectedEdges.some(
+      (edge) => edge.source === nodeId && edge.sourceHandle === id
+    );
+
+    return isSourceInEdge ? "source" : "target";
   }, [getEdges, nodeId, type, id]);
 
-  // 3가지 스타일 정의 - 각 상태별로 명확히 구분
-  const sourceHandleStyle = {
-    background: "rgba(51, 66, 79, 1)", // 소스 핸들: 초록색
-    width: "16px",
-    height: "16px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
+  /**
+   * 연결 검증 함수
+   * 현재는 시작 노드에서만 연결이 가능하도록 제한
+   */
+  const isValidConnection = useCallback(
+    (connection: any) => connection.source === "start",
+    []
+  );
 
-  const targetHandleStyle = {
-    background: "transparent", // 타겟 핸들: 주황색
-    width: "16px",
-    height: "16px",
-    border: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  const disconnectedHandleStyle = {
-    background: "rgba(133, 142, 150, 1)", // 연결 안됨: 회색
-    border: "none",
-    width: "8px",
-    height: "8px",
-  };
-
-  // 핸들 상태에 따라 스타일 선택
-  const getHandleStyle = () => {
-    switch (handleStatus) {
-      case "source":
-        return sourceHandleStyle;
-      case "target":
-        return targetHandleStyle;
-      case "disconnected":
-      default:
-        return disconnectedHandleStyle;
-    }
-  };
+  /**
+   * 연결 이벤트 핸들러
+   * 디버깅 및 로깅 목적으로 사용
+   */
+  const onConnect = useCallback(
+    (params: any) => {
+      console.log("Handle connected:", { nodeId, handleId: id, params });
+    },
+    [nodeId, id]
+  );
 
   return (
     <Handle
       id={id}
       type={type}
       position={position}
-      style={getHandleStyle()}
-      isValidConnection={(connection) => connection.source === "start"}
-      onConnect={(params) => {
-        console.log("handle onConnect", params);
-      }}
+      style={getHandleStyle(handleStatus)}
+      isValidConnection={isValidConnection}
+      onConnect={onConnect}
     >
+      {/* 소스 핸들일 때 추가 아이콘 표시 */}
       {handleStatus === "source" && (
-        <img src={AddIcon} alt="add" className="handle-icon" />
+        <img
+          src={AddIcon}
+          alt="연결 추가"
+          className="handle-icon"
+          width={12}
+          height={12}
+        />
       )}
+
+      {/* 타겟 핸들일 때 화살표 아이콘 표시 */}
       {handleStatus === "target" && (
         <img
           src={TargetArrowIcon}
-          alt="target"
+          alt="연결 대상"
           className="handle-icon"
           width={16}
           height={16}

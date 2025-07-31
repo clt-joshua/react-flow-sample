@@ -63,9 +63,13 @@
   flex-direction: column;
 }
 
-.basic-node .node-input-container span {
+.basic-node .node-input-container span,
+.basic-node .node-label {
   font-size: 12px;
   font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+  color: #33424F;
 }
 
 .basic-node .outlined-button {
