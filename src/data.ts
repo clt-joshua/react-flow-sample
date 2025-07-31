@@ -90,13 +90,14 @@ export const initialNodes = [
     position: { x: 2500, y: 0 },
     data: {
       text: `다음과 같이 예약하시겠습니까?
-      출발: [departurePort]
-      목적: [destinationPort]
-      출발일: [departureDate]
-      화물 무게: [cargoWeight]kg
-      컨테이너 타입: [containerType]
-      컨테이너 수량: [containerCount]
+출발: [departurePort]
+목적: [destinationPort]
+출발일: [departureDate]
+화물 무게: [cargoWeight]kg
+컨테이너 타입: [containerType]
+컨테이너 수량: [containerCount]
       `,
+      slot: "containerType",
       hasQuickReplies: true,
       quickReplies: [
         {

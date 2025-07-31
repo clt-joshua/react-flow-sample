@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { BasicNodeDataProps } from "../types";
+import DeleteIcon from "../../public/icon_delete.svg";
+import CancelIcon from "../../public/icon_cancel.svg";
 
 export function SlotNode({
   id,
@@ -21,47 +23,58 @@ export function SlotNode({
 
   return (
     <div className="basic-node">
-      <span>
-        <span className="basic-node-label">Type:</span> {type}
-      </span>
-      <hr style={{ margin: "0" }} />
-      <span>
-        <span className="basic-node-label">ID:</span> {id}
-      </span>
-      <div className="input-container">
-        <span className="basic-node-label">Text:</span>
-        <textarea defaultValue={data.text} rows={3} />
+      <div className={`node-header-border ${type}`} />
+      <div className="node-title-container">
+        <span className="node-title">Type: {type}</span>
+        <button className="icon_button">
+          <img src={DeleteIcon} alt="Delete" />
+        </button>
       </div>
-      <div className="input-container">
-        <span className="basic-node-label">Slot:</span>
-        <input type="text" defaultValue={data.slot} />
-      </div>
-      {data.hasQuickReplies && (
-        <div className="input-container" style={{ display: "flex" }}>
-          <span className="basic-node-label">Quick Replies:</span>
-          {quickReplies.map((reply, index) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "10px",
-                alignItems: "center",
-              }}
-            >
-              <input type="text" defaultValue={reply.text} placeholder="Text" />
-              <input
-                type="text"
-                defaultValue={reply.value}
-                placeholder="Value"
-              />
-              <button onClick={() => handleDeleteReply(index)}>Delete</button>
-            </div>
-          ))}
-          <button onClick={handleAddReply}>Add Reply</button>
+      <div className="node-content-container">
+        <div className="node-input-container">
+          <span>{id}</span>
+          <textarea defaultValue={data.text} rows={3} />
         </div>
-      )}
-      <button>Delete Node</button>
+        <div className="node-input-container">
+          <span>Slot:</span>
+          <input type="text" defaultValue={data.slot} />
+        </div>
+        {data.hasQuickReplies && (
+          <div className="node-quick-replies-container">
+            <span>Quick Replies:</span>
+            {quickReplies.map((reply, index) => (
+              <div
+                key={index}
+                className="node-quick-reply-item"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  defaultValue={reply.text}
+                  placeholder="Text"
+                />
+                <input
+                  type="text"
+                  defaultValue={reply.value}
+                  placeholder="Value"
+                />
+                <button
+                  className="icon_button"
+                  onClick={() => handleDeleteReply(index)}
+                >
+                  <img src={CancelIcon} alt="Cancel" />
+                </button>
+              </div>
+            ))}
+            <button className="outlined-button" onClick={handleAddReply}>
+              Add Reply
+            </button>
+          </div>
+        )}
+      </div>
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
       <Handle type="source" position={Position.Bottom} />
@@ -78,53 +91,21 @@ export function TextNode({
   type: string;
   data: BasicNodeDataProps;
 }) {
-  const [quickReplies, setQuickReplies] = useState(data.quickReplies || []);
-  const handleAddReply = () => {
-    setQuickReplies([...quickReplies, { text: "", value: "" }]);
-  };
-  const handleDeleteReply = (index: number) => {
-    setQuickReplies(quickReplies.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="basic-node">
-      <span>
-        <span className="basic-node-label">Type:</span> {type}
-      </span>
-      <hr style={{ margin: "0" }} />
-      <span>
-        <span className="basic-node-label">ID:</span> {id}
-      </span>
-      <div className="input-container">
-        <span className="basic-node-label">Text:</span>
-        <textarea defaultValue={data.text} rows={3} />
+      <div className={`node-header-border ${type}`} />
+      <div className="node-title-container">
+        <span className="node-title">Type: {type}</span>
+        <button className="icon_button">
+          <img src={DeleteIcon} alt="Delete" />
+        </button>
       </div>
-      {data.hasQuickReplies && (
-        <div className="input-container" style={{ display: "flex" }}>
-          <span className="basic-node-label">Quick Replies:</span>
-          {quickReplies.map((reply, index) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "10px",
-                alignItems: "center",
-              }}
-            >
-              <input type="text" defaultValue={reply.text} placeholder="Text" />
-              <input
-                type="text"
-                defaultValue={reply.value}
-                placeholder="Value"
-              />
-              <button onClick={() => handleDeleteReply(index)}>Delete</button>
-            </div>
-          ))}
-          <button onClick={handleAddReply}>Add Reply</button>
+      <div className="node-content-container">
+        <div className="node-input-container">
+          <span>{id}</span>
+          <textarea defaultValue={data.text} rows={3} />
         </div>
-      )}
-      <button>Delete Node</button>
+      </div>
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
       <Handle type="source" position={Position.Bottom} />

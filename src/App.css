@@ -1,28 +1,149 @@
 .basic-node {
   background-color: white;
-  padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  border: 1px solid #EBECEC;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  width: 324px;
+}
+
+.icon_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_button:hover {
+  background-color: #f0f0f0;
+}
+
+.basic-node .node-header-border {
+  width: 100%;
+  height: 4px;
+  border-radius: 4px 4px 0 0;
+}
+
+.basic-node .node-header-border.slotFilling {
+  background-color: #767BFB;
+}
+
+.basic-node .node-header-border.confirmation {
+  background-color: rgba(20, 175, 146, 1)
+}
+
+.basic-node .node-header-border.text {
+  background-color: rgba(255, 156, 102, 1)
+}
+
+.basic-node .node-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.basic-node .node-content-container {
+  border-top: 1px solid #EBECEC;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.basic-node .basic-node-label {
-  font-weight: bold;
-}
-
-.basic-node .input-container {
+.basic-node .node-input-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.basic-node .node-input-container span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.basic-node .outlined-button {
+  border-radius: 100px;
+  background-color: white;
+  border: 1px solid #8A8A8A;
+  color: #33424F;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  width: fit-content;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.basic-node .outlined-button:hover {
+  background-color: #F5F5F5;
+} 
+
+
+
+.basic-node input,
+.basic-node textarea {
+  border: 1px solid #8A8A8A;
+  border-radius: 4px;
+  padding: 6px 12px;
+  resize: none;
+  font-family:"Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: #1C1C1C;
+}
+
+/* .basic-node .node-input-container textarea,
+.basic-node .node-input-container input {
+  border: 1px solid #8A8A8A;
+  border-radius: 4px;
+  padding: 6px 12px;
+  resize: none;
+  font-family:"Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #000000;
+} */
+
+.basic-node .node-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.basic-node .node-quick-replies-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.basic-node .node-quick-replies-container span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.basic-node .node-quick-reply-item {
+  display: flex;
   gap: 4px;
 }
 
-.basic-node .input-container input,
-.basic-node .input-container textarea {
+.basic-node .node-quick-reply-item input {
+  flex: 1;
   width: 100%;
 }
+
 
 .react-flow {
   --xy-edge-stroke-default: #000;	
