@@ -103,9 +103,4 @@ export const FLOW_SETTINGS = {
     strokeWidth: 1.3,
     strokeColor: "#33424F",
   },
-  /** 베지어 곡선 설정 */
-  BEZIER_CURVE: {
-    /** 곡선 강도 조절 (0.0 ~ 1.0) */
-    CURVE_INTENSITY: 0.3,
-  },
 } as const;
