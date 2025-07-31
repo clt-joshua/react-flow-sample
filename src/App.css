@@ -1,0 +1,29 @@
+.basic-node {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.basic-node .basic-node-label {
+  font-weight: bold;
+}
+
+.basic-node .input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.basic-node .input-container input,
+.basic-node .input-container textarea {
+  width: 100%;
+}
+
+.react-flow {
+  --xy-edge-stroke-default: #000;	
+}
