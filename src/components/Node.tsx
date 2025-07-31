@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Handle, Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 import type { BasicNodeDataProps } from "../types";
-import DeleteIcon from "../../public/icon_delete.svg";
-import CancelIcon from "../../public/icon_cancel.svg";
+import DeleteIcon from "../../public/icon_delete.svg?url";
+import CancelIcon from "../../public/icon_cancel.svg?url";
+import { CustomHandle } from "./Handle";
 
 export function SlotNode({
   id,
@@ -75,9 +76,24 @@ export function SlotNode({
           </div>
         )}
       </div>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <Handle type="source" position={Position.Bottom} />
+      <CustomHandle
+        type="target"
+        position={Position.Left}
+        nodeId={id}
+        id={`${id}-left-target`}
+      />
+      <CustomHandle
+        type="source"
+        position={Position.Right}
+        nodeId={id}
+        id={`${id}-right-source`}
+      />
+      <CustomHandle
+        type="source"
+        position={Position.Bottom}
+        nodeId={id}
+        id={`${id}-bottom-source`}
+      />
     </div>
   );
 }
@@ -106,9 +122,24 @@ export function TextNode({
           <textarea defaultValue={data.text} rows={3} />
         </div>
       </div>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <Handle type="source" position={Position.Bottom} />
+      <CustomHandle
+        type="target"
+        position={Position.Left}
+        nodeId={id}
+        id={`${id}-left-target`}
+      />
+      <CustomHandle
+        type="source"
+        position={Position.Right}
+        nodeId={id}
+        id={`${id}-right-source`}
+      />
+      <CustomHandle
+        type="source"
+        position={Position.Bottom}
+        nodeId={id}
+        id={`${id}-bottom-source`}
+      />
     </div>
   );
 }

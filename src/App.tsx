@@ -34,7 +34,10 @@ export default function App() {
   );
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
-      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+      setEdges(
+        (edgesSnapshot) =>
+          applyEdgeChanges(changes, edgesSnapshot) as typeof edgesSnapshot
+      ),
     []
   );
   const onConnect = useCallback(
