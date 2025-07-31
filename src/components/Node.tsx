@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Position } from "@xyflow/react";
 import type { BasicNodeDataProps } from "../types";
-import DeleteIcon from "../../public/icon_delete.svg?url";
-import CancelIcon from "../../public/icon_cancel.svg?url";
+import DeleteIcon from "/icon_delete.svg?url";
+import CancelIcon from "/icon_cancel.svg?url";
 import { CustomHandle } from "./Handle";
 
 export function SlotNode({

@@ -1,7 +1,7 @@
 import { Handle, type HandleType, Position, useReactFlow } from "@xyflow/react";
 import { useMemo } from "react";
-import AddIcon from "../../public/icon_add.svg?url";
-import TargetArrowIcon from "../../public/icon_target_arrow.svg?url";
+import AddIcon from "/icon_add.svg?url";
+import TargetArrowIcon from "/icon_target_arrow.svg?url";
 
 export function CustomHandle({
   id,
