@@ -71,6 +71,7 @@ export function CustomHandle({
    * 현재는 시작 노드에서만 연결이 가능하도록 제한
    */
   const isValidConnection = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (connection: any) => connection.source === "start",
     []
   );
@@ -80,6 +81,7 @@ export function CustomHandle({
    * 디버깅 및 로깅 목적으로 사용
    */
   const onConnect = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (params: any) => {
       console.log("Handle connected:", { nodeId, handleId: id, params });
     },

@@ -1,8 +1,28 @@
+/* CSS Variables for consistency */
+:root {
+  --node-border-color: #EBECEC;
+  --node-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  --text-primary: #33424F;
+  --text-secondary: #1C1C1C;
+  --border-color: #8A8A8A;
+  --hover-bg: #F5F5F5;
+  --slot-filling-color: #767BFB;
+  --confirmation-color: #14AF92;
+  --text-color: #FF9C66;
+  --border-radius-sm: 4px;
+  --border-radius-md: 5px;
+  --border-radius-lg: 100px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+}
+
 .basic-node {
   background-color: white;
-  border-radius: 5px;
-  border: 1px solid #EBECEC;
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--node-border-color);
+  box-shadow: var(--node-shadow);
   display: flex;
   flex-direction: column;
   width: 324px;
@@ -22,7 +42,7 @@
 }
 
 .icon_button:hover {
-  background-color: #f0f0f0;
+  background-color: var(--hover-bg);
 }
 
 .basic-node .node-header-border {
@@ -32,30 +52,30 @@
 }
 
 .basic-node .node-header-border.slotFilling {
-  background-color: #767BFB;
+  background-color: var(--slot-filling-color);
 }
 
 .basic-node .node-header-border.confirmation {
-  background-color: rgba(20, 175, 146, 1)
+  background-color: var(--confirmation-color);
 }
 
 .basic-node .node-header-border.text {
-  background-color: rgba(255, 156, 102, 1)
+  background-color: var(--text-color);
 }
 
 .basic-node .node-title-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
+  padding: var(--spacing-xs) var(--spacing-sm);
 }
 
 .basic-node .node-content-container {
-  border-top: 1px solid #EBECEC;
-  padding: 12px;
+  border-top: 1px solid var(--node-border-color);
+  padding: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--spacing-md);
 }
 
 .basic-node .node-input-container {
@@ -68,15 +88,15 @@
   font-size: 12px;
   font-weight: 600;
   display: block;
-  margin-bottom: 4px;
-  color: #33424F;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
 }
 
 .basic-node .outlined-button {
   border-radius: 100px;
   background-color: white;
-  border: 1px solid #8A8A8A;
-  color: #33424F;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   text-align: center;
   font-style: normal;
   font-weight: 500;
@@ -90,23 +110,21 @@
 }
 
 .basic-node .outlined-button:hover {
-  background-color: #F5F5F5;
-} 
-
-
+  background-color: var(--hover-bg);
+}
 
 .basic-node input,
 .basic-node textarea {
-  border: 1px solid #8A8A8A;
-  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   padding: 6px 12px;
   resize: none;
-  font-family:"Roboto", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0.25px;
-  color: #1C1C1C;
+  color: var(--text-secondary);
 }
 
 .basic-node .node-title {
@@ -117,7 +135,7 @@
 .basic-node .node-quick-replies-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 .basic-node .node-quick-replies-container span {
@@ -127,14 +145,13 @@
 
 .basic-node .node-quick-reply-item {
   display: flex;
-  gap: 4px;
+  gap: var(--spacing-xs);
 }
 
 .basic-node .node-quick-reply-item input {
   flex: 1;
   width: 100%;
 }
-
 
 .react-flow {
   --xy-edge-stroke-default: #33424F;

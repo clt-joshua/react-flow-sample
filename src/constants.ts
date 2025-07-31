@@ -69,22 +69,6 @@ export const BOOKING_CONSTANTS = {
 } as const;
 
 /**
- * 검증 관련 상수
- */
-export const VALIDATION_CONSTANTS = {
-  /** 날짜 형식 예시 */
-  DATE_FORMAT_EXAMPLE: "2025-08-01",
-  /** 날짜 형식 정규식 */
-  DATE_FORMAT_REGEX: /^\d{4}-\d{2}-\d{2}$/,
-  /** 무게 단위 */
-  WEIGHT_UNIT: "kg",
-  /** 최대 컨테이너 수량 */
-  MAX_CONTAINER_COUNT: 100,
-  /** 최소 컨테이너 수량 */
-  MIN_CONTAINER_COUNT: 1,
-} as const;
-
-/**
  * 메시지 템플릿
  */
 export const MESSAGE_TEMPLATES = {
