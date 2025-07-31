@@ -1,259 +1,132 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   ReactFlow,
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
-  Handle,
-  Position,
   Background,
   Controls,
   MiniMap,
-  BaseEdge,
-  EdgeLabelRenderer,
 } from "@xyflow/react";
 import type { NodeChange, EdgeChange, Connection } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import "./App.css";
 import { initialNodes, initialEdges } from "./data";
-import type { BasicNodeDataProps } from "./types";
+import { SlotNode, TextNode } from "./components/Node";
+import { FLOW_SETTINGS } from "./constants";
 
+/**
+ * 선박 예약 챗봇 플로우 시각화 메인 애플리케이션 컴포넌트
+ *
+ * React Flow를 사용하여 대화형 챗봇 플로우를 시각적으로 구성하고 편집할 수 있는
+ * 인터페이스를 제공합니다. 사용자는 노드를 추가/편집/삭제하고 연결할 수 있습니다.
+ *
+ * @returns JSX.Element
+ */
 export default function App() {
+  // 노드와 엣지 상태 관리
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
-  const nodeTypes = {
-    slotFilling: SlotNode,
-    text: TextNode,
-    confirmation: SlotNode,
-  };
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes(
-        (nodesSnapshot) =>
-          applyNodeChanges(changes, nodesSnapshot) as typeof nodesSnapshot
-      ),
+  /**
+   * 지원되는 노드 타입들 정의
+   * - slotFilling: 사용자 입력을 받는 슬롯 채우기 노드
+   * - text: 단순 메시지 출력 노드
+   * - confirmation: 확인/취소 선택 노드
+   */
+  const nodeTypes = useMemo(
+    () => ({
+      slotFilling: SlotNode,
+      text: TextNode,
+      confirmation: SlotNode, // 확인 노드도 SlotNode 구조 사용
+    }),
     []
   );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    []
-  );
-  const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-    []
-  );
+
+  /**
+   * 노드 변경사항을 처리합니다
+   * 노드의 위치 이동, 선택, 삭제 등의 변경사항을 적용합니다
+   */
+  const onNodesChange = useCallback((changes: NodeChange[]) => {
+    console.log("노드 변경:", changes);
+    setNodes(
+      (nodesSnapshot) =>
+        applyNodeChanges(changes, nodesSnapshot) as typeof nodesSnapshot
+    );
+  }, []);
+
+  /**
+   * 엣지 변경사항을 처리합니다
+   * 엣지의 선택, 삭제 등의 변경사항을 적용합니다
+   */
+  const onEdgesChange = useCallback((changes: EdgeChange[]) => {
+    console.log("엣지 변경:", changes);
+    setEdges(
+      (edgesSnapshot) =>
+        applyEdgeChanges(changes, edgesSnapshot) as typeof edgesSnapshot
+    );
+  }, []);
+
+  /**
+   * 새로운 연결을 생성합니다
+   * 사용자가 노드 간 연결을 만들 때 호출됩니다
+   */
+  const onConnect = useCallback((params: Connection) => {
+    console.log("새 연결 생성:", params);
+    setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot));
+  }, []);
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div
+      className="app-container"
+      style={FLOW_SETTINGS.VIEWPORT}
+      role="application"
+      aria-label="선박 예약 챗봇 플로우 에디터"
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
-        edgeTypes={{ edgeWithLabel: EdgeWithLabel }}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
+        attributionPosition="bottom-left"
+        minZoom={0.2}
+        maxZoom={2}
+        defaultEdgeOptions={{
+          animated: FLOW_SETTINGS.EDGE_OPTIONS.animated,
+          style: {
+            strokeWidth: FLOW_SETTINGS.EDGE_OPTIONS.strokeWidth,
+            stroke: FLOW_SETTINGS.EDGE_OPTIONS.strokeColor,
+          },
+        }}
       >
-        <Background />
-        <Controls />
-        <MiniMap />
+        {/* 배경 그리드 패턴 */}
+        <Background gap={20} size={1} color="#e5e5e5" />
+
+        {/* 줌/팬 컨트롤 */}
+        <Controls showZoom={true} showFitView={true} showInteractive={true} />
+
+        {/* 미니맵 */}
+        <MiniMap
+          position="bottom-right"
+          zoomable
+          pannable
+          nodeColor={(node) => {
+            switch (node.type) {
+              case "slotFilling":
+                return "#767BFB";
+              case "confirmation":
+                return "rgba(20, 175, 146, 1)";
+              case "text":
+                return "rgba(255, 156, 102, 1)";
+              default:
+                return "#cccccc";
+            }
+          }}
+        />
       </ReactFlow>
     </div>
   );
 }
-
-function SlotNode({
-  id,
-  type,
-  data,
-}: {
-  id: string;
-  type: string;
-  data: BasicNodeDataProps;
-}) {
-  const [quickReplies, setQuickReplies] = useState(data.quickReplies || []);
-  const handleAddReply = () => {
-    setQuickReplies([...quickReplies, { text: "", value: "" }]);
-  };
-  const handleDeleteReply = (index: number) => {
-    setQuickReplies(quickReplies.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="basic-node">
-      <span>
-        <span className="basic-node-label">Type:</span> {type}
-      </span>
-      <hr style={{ margin: "0" }} />
-      <span>
-        <span className="basic-node-label">ID:</span> {id}
-      </span>
-      <div className="input-container">
-        <span className="basic-node-label">Text:</span>
-        <textarea defaultValue={data.text} rows={3} />
-      </div>
-      <div className="input-container">
-        <span className="basic-node-label">Slot:</span>
-        <input type="text" defaultValue={data.slot} />
-      </div>
-      {data.hasQuickReplies && (
-        <div className="input-container" style={{ display: "flex" }}>
-          <span className="basic-node-label">Quick Replies:</span>
-          {quickReplies.map((reply, index) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "10px",
-                alignItems: "center",
-              }}
-            >
-              <input type="text" defaultValue={reply.text} placeholder="Text" />
-              <input
-                type="text"
-                defaultValue={reply.value}
-                placeholder="Value"
-              />
-              <button onClick={() => handleDeleteReply(index)}>Delete</button>
-            </div>
-          ))}
-          <button onClick={handleAddReply}>Add Reply</button>
-        </div>
-      )}
-      <button>Delete Node</button>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <Handle type="source" position={Position.Bottom} />
-    </div>
-  );
-}
-
-function TextNode({
-  id,
-  type,
-  data,
-}: {
-  id: string;
-  type: string;
-  data: BasicNodeDataProps;
-}) {
-  const [quickReplies, setQuickReplies] = useState(data.quickReplies || []);
-  const handleAddReply = () => {
-    setQuickReplies([...quickReplies, { text: "", value: "" }]);
-  };
-  const handleDeleteReply = (index: number) => {
-    setQuickReplies(quickReplies.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="basic-node">
-      <span>
-        <span className="basic-node-label">Type:</span> {type}
-      </span>
-      <hr style={{ margin: "0" }} />
-      <span>
-        <span className="basic-node-label">ID:</span> {id}
-      </span>
-      <div className="input-container">
-        <span className="basic-node-label">Text:</span>
-        <textarea defaultValue={data.text} rows={3} />
-      </div>
-      {data.hasQuickReplies && (
-        <div className="input-container" style={{ display: "flex" }}>
-          <span className="basic-node-label">Quick Replies:</span>
-          {quickReplies.map((reply, index) => (
-            <div
-              key={index}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "10px",
-                alignItems: "center",
-              }}
-            >
-              <input type="text" defaultValue={reply.text} placeholder="Text" />
-              <input
-                type="text"
-                defaultValue={reply.value}
-                placeholder="Value"
-              />
-              <button onClick={() => handleDeleteReply(index)}>Delete</button>
-            </div>
-          ))}
-          <button onClick={handleAddReply}>Add Reply</button>
-        </div>
-      )}
-      <button>Delete Node</button>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <Handle type="source" position={Position.Bottom} />
-    </div>
-  );
-}
-
-const EdgeWithLabel = ({
-  id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-}: {
-  id: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-}) => {
-  // 가로 연결에 적합한 커스텀 베지어 곡선 계산
-  const createHorizontalBezierPath = (
-    sx: number,
-    sy: number,
-    tx: number,
-    ty: number
-  ): string => {
-    const distance = Math.abs(tx - sx);
-    const offset = distance * 0.3; // 곡선의 강도 조절
-
-    // 가로 연결에 적합한 제어점 계산
-    const control1X = sx + offset;
-    const control1Y = sy;
-    const control2X = tx - offset;
-    const control2Y = ty;
-
-    return `M ${sx} ${sy} C ${control1X} ${control1Y} ${control2X} ${control2Y} ${tx} ${ty}`;
-  };
-
-  // 라벨 위치 계산 (곡선의 중간점)
-  const labelX = (sourceX + targetX) / 2;
-  const labelY = (sourceY + targetY) / 2;
-
-  const customPath = createHorizontalBezierPath(
-    sourceX,
-    sourceY,
-    targetX,
-    targetY
-  );
-
-  return (
-    <>
-      <BaseEdge id={id} path={customPath} />
-      <EdgeLabelRenderer>
-        <div
-          style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-            pointerEvents: "all",
-          }}
-          className="nodrag nopan"
-        >
-          {id}
-        </div>
-      </EdgeLabelRenderer>
-    </>
-  );
-};

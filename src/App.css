@@ -1,29 +1,159 @@
+/* CSS Variables for consistency */
+:root {
+  --node-border-color: #EBECEC;
+  --node-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  --text-primary: #33424F;
+  --text-secondary: #1C1C1C;
+  --border-color: #8A8A8A;
+  --hover-bg: #F5F5F5;
+  --slot-filling-color: #767BFB;
+  --confirmation-color: #14AF92;
+  --text-color: #FF9C66;
+  --border-radius-sm: 4px;
+  --border-radius-md: 5px;
+  --border-radius-lg: 100px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+}
+
 .basic-node {
   background-color: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--node-border-color);
+  box-shadow: var(--node-shadow);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  width: 324px;
 }
 
-.basic-node .basic-node-label {
-  font-weight: bold;
-}
-
-.basic-node .input-container {
+.icon_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 999px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
 }
 
-.basic-node .input-container input,
-.basic-node .input-container textarea {
+.icon_button:hover {
+  background-color: var(--hover-bg);
+}
+
+.basic-node .node-header-border {
+  width: 100%;
+  height: 4px;
+  border-radius: 4px 4px 0 0;
+}
+
+.basic-node .node-header-border.slotFilling {
+  background-color: var(--slot-filling-color);
+}
+
+.basic-node .node-header-border.confirmation {
+  background-color: var(--confirmation-color);
+}
+
+.basic-node .node-header-border.text {
+  background-color: var(--text-color);
+}
+
+.basic-node .node-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.basic-node .node-content-container {
+  border-top: 1px solid var(--node-border-color);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.basic-node .node-input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.basic-node .node-input-container span,
+.basic-node .node-label {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.basic-node .outlined-button {
+  border-radius: 100px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  width: fit-content;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.basic-node .outlined-button:hover {
+  background-color: var(--hover-bg);
+}
+
+.basic-node input,
+.basic-node textarea {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 6px 12px;
+  resize: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: var(--text-secondary);
+}
+
+.basic-node .node-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.basic-node .node-quick-replies-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.basic-node .node-quick-replies-container span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.basic-node .node-quick-reply-item {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.basic-node .node-quick-reply-item input {
+  flex: 1;
   width: 100%;
 }
 
 .react-flow {
-  --xy-edge-stroke-default: #000;	
+  --xy-edge-stroke-default: #33424F;
+  --xy-edge-stroke-width-default: 1.3px;
 }
