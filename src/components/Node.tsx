@@ -203,6 +203,9 @@ export function TextNode({ id, type, data }: CustomNodeProps) {
             aria-label="노드 텍스트"
           />
         </div>
+        {data.hasQuickReplies && (
+          <button className="outlined-button">Add Reply</button>
+        )}
       </div>
 
       {/* 노드 연결 핸들들 */}

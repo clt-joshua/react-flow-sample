@@ -103,7 +103,7 @@ export default function App() {
         }}
       >
         {/* 배경 그리드 패턴 */}
-        <Background gap={20} size={1} color="#e5e5e5" />
+        <Background />
 
         {/* 줌/팬 컨트롤 */}
         <Controls showZoom={true} showFitView={true} showInteractive={true} />
