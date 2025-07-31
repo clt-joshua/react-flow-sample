@@ -123,12 +123,8 @@ export function SlotNode({ id, type, data }: CustomNodeProps) {
                 </button>
               </div>
             ))}
-            <button
-              className="outlined-button"
-              onClick={handleAddReply}
-              title="빠른 답변 추가"
-            >
-              빠른 답변 추가
+            <button className="outlined-button" onClick={handleAddReply}>
+              Add Reply
             </button>
           </div>
         )}

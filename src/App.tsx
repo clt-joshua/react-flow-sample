@@ -106,12 +106,7 @@ export default function App() {
         <Background gap={20} size={1} color="#e5e5e5" />
 
         {/* 줌/팬 컨트롤 */}
-        <Controls
-          position="top-left"
-          showZoom={true}
-          showFitView={true}
-          showInteractive={true}
-        />
+        <Controls showZoom={true} showFitView={true} showInteractive={true} />
 
         {/* 미니맵 */}
         <MiniMap
@@ -129,11 +124,6 @@ export default function App() {
               default:
                 return "#cccccc";
             }
-          }}
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            border: "1px solid #e5e5e5",
-            borderRadius: "4px",
           }}
         />
       </ReactFlow>
